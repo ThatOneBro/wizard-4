@@ -2,6 +2,10 @@ package sprites
 
 import "github.com/orsinium-labs/wasm4go/w4"
 
+const (
+	SpriteWidth uint8 = 16
+)
+
 type Sprite struct {
 	Bytes        [64]byte
 	ColorMapping [4]w4.DrawColor

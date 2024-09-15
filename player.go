@@ -11,41 +11,40 @@ type Direction struct {
 	Y int8
 }
 
-type Player struct {
-	Sprite    *sprites.Sprite
-	Position  w4.Point
-	Direction Direction
+type PlayerState int
+
+const (
+	Idle PlayerState = iota
+)
+
+// String - Creating common behavior - give the type a String function
+func (s PlayerState) String() string {
+	return [...]string{"Idle"}[s]
 }
 
-func (p *Player) Update() {
-	AddDirection(&p.Position, &p.Direction)
+// EnumIndex - Creating common behavior - give the type a EnumIndex function
+func (s PlayerState) EnumIndex() int {
+	return int(s)
+}
+
+type PlayerUpdate struct {
+	PlayerVector Vector
+}
+
+type Player struct {
+	Sprite         *sprites.Sprite
+	ScreenPosition w4.Point
+	WorldPosition  w4.Point
+	State          PlayerState
+}
+
+func (p *Player) Update(u *PlayerUpdate) {
+	AddVectorToPoint(&p.ScreenPosition, &u.PlayerVector)
 }
 
 func (p *Player) Draw() {
+	// wp := GetScreenPosFromWorldPos(p.WorldPosition)
+	// LerpPointToPoint(&p.ScreenPosition, &wp, 20)
 	w4.DrawColors.Set(p.Sprite.ColorMapping[0], p.Sprite.ColorMapping[1], p.Sprite.ColorMapping[2], p.Sprite.ColorMapping[3])
-	w4.Blit(p.Sprite.GetBytes(), p.Position, p.Sprite.Size, p.Sprite.Flags)
-}
-
-func (p *Player) Down() {
-	if p.Direction.Y == 0 {
-		p.Direction = Direction{X: 0, Y: 1}
-	}
-}
-
-func (p *Player) Up() {
-	if p.Direction.Y == 0 {
-		p.Direction = Direction{X: 0, Y: -1}
-	}
-}
-
-func (p *Player) Left() {
-	if p.Direction.X == 0 {
-		p.Direction = Direction{X: -1, Y: 0}
-	}
-}
-
-func (p *Player) Right() {
-	if p.Direction.X == 0 {
-		p.Direction = Direction{X: 1, Y: 0}
-	}
+	w4.Blit(p.Sprite.GetBytes(), p.ScreenPosition, p.Sprite.Size, p.Sprite.Flags)
 }

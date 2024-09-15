@@ -8,9 +8,9 @@ import (
 
 var (
 	player = &Player{
-		Sprite:    &sprites.WizardSprite,
-		Position:  w4.Point{X: 2, Y: 0},
-		Direction: Direction{X: 1, Y: 0},
+		Sprite:         &sprites.WizardSprite,
+		WorldPosition:  w4.Point{X: 2, Y: 0},
+		ScreenPosition: w4.Point{X: 32 /* 2 x 16 */, Y: 0},
 	}
 	frameCount = 0
 )
@@ -36,21 +36,24 @@ func update() {
 	frameCount++
 
 	g := w4.Gamepad
-
-	if g.Up() {
-		player.Up()
-	} else if g.Down() {
-		player.Down()
-	} else if g.Left() {
-		player.Left()
-	} else if g.Right() {
-		player.Right()
-	} else {
-		player.Direction = Direction{}
-	}
+	v := Vector{X: 0, Y: 0}
 
 	if frameCount%15 == 0 {
-		player.Update()
+		if g.Up() {
+			v.AddVector(&UpVector)
+		}
+		if g.Down() {
+			v.AddVector(&DownVector)
+		}
+		if g.Left() {
+			v.AddVector(&LeftVector)
+		}
+		if g.Right() {
+			v.AddVector(&RightVector)
+		}
+
+		player.Update(&PlayerUpdate{PlayerVector: v})
 	}
+
 	player.Draw()
 }
