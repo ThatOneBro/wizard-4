@@ -15,12 +15,13 @@ var (
 	frameCount = 0
 )
 
+// Need a main, even if its a noop. Otherwise runtime crashes due to undefined symbol
+func main() {}
+
 func init() {
 	w4.Start = start
 	w4.Update = update
 }
-
-func main() {}
 
 func start() {
 	w4.Palette.Set(
