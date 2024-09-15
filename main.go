@@ -9,8 +9,8 @@ import (
 var (
 	player = &Player{
 		Sprite:         &sprites.WizardSprite,
-		WorldPosition:  w4.Point{X: 2, Y: 0},
-		ScreenPosition: w4.Point{X: 32 /* 2 x 16 */, Y: 0},
+		WorldPosition:  w4.Point{X: 0, Y: 0},
+		ScreenPosition: w4.Point{X: 0 /* 2 x 16 */, Y: 0},
 	}
 	frameCount = 0
 )

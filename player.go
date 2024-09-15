@@ -6,11 +6,6 @@ import (
 	"github.com/orsinium-labs/wasm4go/w4"
 )
 
-type Direction struct {
-	X int8
-	Y int8
-}
-
 type PlayerState int
 
 const (
