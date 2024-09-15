@@ -1,4 +1,4 @@
-# snake
+# wizard-4
 
 A game written in Go for the [WASM-4](https://wasm4.org) fantasy console.
 
