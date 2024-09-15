@@ -12,10 +12,10 @@ type Vector struct {
 }
 
 var (
-	UpVector    = Vector{X: 0, Y: -1}
-	DownVector  = Vector{X: 0, Y: 1}
-	LeftVector  = Vector{X: -1, Y: 0}
-	RightVector = Vector{X: 1, Y: 0}
+	UpVector    = &Vector{X: 0, Y: -1}
+	DownVector  = &Vector{X: 0, Y: 1}
+	LeftVector  = &Vector{X: -1, Y: 0}
+	RightVector = &Vector{X: 1, Y: 0}
 )
 
 func AddVectorToPoint(p *w4.Point, v *Vector) {
