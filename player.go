@@ -31,6 +31,7 @@ type Player struct {
 	ScreenPosition w4.Point
 	WorldPosition  w4.Point
 	State          PlayerState
+	Connected      bool
 }
 
 func (p *Player) Update(u *PlayerUpdate) {

@@ -7,11 +7,28 @@ import (
 )
 
 var (
-	player = &Player{
-		Sprite:         sprites.WizardSprite,
-		WorldPosition:  w4.Point{X: 0, Y: 0},
-		ScreenPosition: w4.Point{X: 0, Y: 0},
-	}
+	players = [4](*Player){
+		&Player{
+			Sprite:         sprites.WizardSprite,
+			WorldPosition:  w4.Point{X: 0, Y: 0},
+			ScreenPosition: w4.Point{X: 0, Y: 0},
+			Connected:      true,
+		},
+		&Player{
+			Sprite:         sprites.WizardSprite,
+			WorldPosition:  w4.Point{X: 0, Y: 0},
+			ScreenPosition: w4.Point{X: 0, Y: 0},
+		},
+		&Player{
+			Sprite:         sprites.WizardSprite,
+			WorldPosition:  w4.Point{X: 0, Y: 0},
+			ScreenPosition: w4.Point{X: 0, Y: 0},
+		},
+		&Player{
+			Sprite:         sprites.WizardSprite,
+			WorldPosition:  w4.Point{X: 0, Y: 0},
+			ScreenPosition: w4.Point{X: 0, Y: 0},
+		}}
 	frameCount = 0
 )
 
@@ -32,28 +49,43 @@ func start() {
 	)
 }
 
+func updatePlayer(p *Player, i int) {
+	g := w4.Gamepads[i]
+	v := Vector{X: 0, Y: 0}
+
+	if g.Up() {
+		v.AddVector(UpVector)
+	}
+	if g.Down() {
+		v.AddVector(DownVector)
+	}
+	if g.Left() {
+		v.AddVector(LeftVector)
+	}
+	if g.Right() {
+		v.AddVector(RightVector)
+	}
+
+	p.Update(&PlayerUpdate{PlayerVector: v})
+}
+
 func update() {
 	frameCount++
 
-	g := w4.Gamepad
-	v := Vector{X: 0, Y: 0}
-
 	if frameCount%15 == 0 {
-		if g.Up() {
-			v.AddVector(UpVector)
+		for i, player := range players {
+			if player.Connected {
+				updatePlayer(player, i)
+			} else if w4.Gamepads[i].Any() {
+				player.Connected = true
+				updatePlayer(player, i)
+			}
 		}
-		if g.Down() {
-			v.AddVector(DownVector)
-		}
-		if g.Left() {
-			v.AddVector(LeftVector)
-		}
-		if g.Right() {
-			v.AddVector(RightVector)
-		}
-
-		player.Update(&PlayerUpdate{PlayerVector: v})
 	}
 
-	player.Draw()
+	for _, player := range players {
+		if player.Connected {
+			player.Draw()
+		}
+	}
 }
